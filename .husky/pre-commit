@@ -1,3 +1,0 @@
-echo "Formatting and linting staged files ✨"
-npm run precommit
-echo "Successfully formatted and linted staged files ✨"
