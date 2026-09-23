@@ -83,14 +83,11 @@ class SimConnectSocket extends Duplex {
 
     connect(address: ConnectionParameters) {
         switch (address.type) {
-            case 'pipe':
-                this._socket.connect(address.address);
-                break;
             case 'ipv4':
                 this._socket.connect(address.port, address.host);
                 break;
             default:
-                throw Error('Unsupported address type. Must be "ipv4" or "pipe"');
+                throw Error('Unsupported address type. Must be "ipv4"');
         }
     }
 

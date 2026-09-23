@@ -2,28 +2,12 @@ import * as Path from 'path';
 import * as os from 'os';
 import debug from 'debug';
 import { readIniFile } from './utils/ini';
-import { readRegistryValue } from './utils/registry';
-import { checkIfNamedPipeExist } from './utils/network';
 
 const logger = debug('node-simconnect');
+const DEFAULT_IPV4_PORT = 2048;
 
-async function findSimConnectPortIPv4(): Promise<number> {
-    try {
-        const port = await readRegistryValue(
-            'HKCU\\Software\\Microsoft\\Microsoft Games\\Flight Simulator',
-            'SimConnect_Port_IPv4'
-        );
-        if (!port) {
-            throw new Error('Could not find SimConnect_Port_IPv4 in the Windows registry');
-        }
-        return parseInt(port, 10);
-    } catch {
-        return 2048;
-    }
-}
 
 export type ConnectionParameters =
-    | { type: 'pipe'; address: string }
     | { type: 'ipv4'; host: string; port: number };
 
 async function readNetworkConfigFromSimConnectCfg(
@@ -75,16 +59,8 @@ async function autodetectServerAddress(cfgIndex?: number): Promise<ConnectionPar
         );
     }
 
-    // Check if named pipe exist
-    const PIPE = '\\\\.\\pipe\\Microsoft Flight Simulator\\SimConnect';
-    const msfsSimconnectPipeOk = await checkIfNamedPipeExist(PIPE);
-    if (msfsSimconnectPipeOk) {
-        return { type: 'pipe', address: PIPE };
-    }
-
     // Read port number from Windows registry
-    const ipv4port = await findSimConnectPortIPv4();
-    return { type: 'ipv4', host: 'localhost', port: ipv4port };
+    return { type: 'ipv4', host: 'localhost', port: DEFAULT_IPV4_PORT };
 }
 
 export { autodetectServerAddress };
