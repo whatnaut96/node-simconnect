@@ -7,8 +7,7 @@ const logger = debug('node-simconnect');
 const DEFAULT_IPV4_PORT = 2048;
 
 
-export type ConnectionParameters =
-    | { type: 'ipv4'; host: string; port: number };
+export type ConnectionParameters = { type: 'ipv4'; host: string; port: number };
 
 async function readNetworkConfigFromSimConnectCfg(
     folderPath: string,

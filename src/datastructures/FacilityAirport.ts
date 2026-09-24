@@ -13,7 +13,7 @@ export class FacilityAirport {
     altitude: number;
 
     constructor(data: RawBuffer, protocol: Protocol) {
-        const icaoLength = protocol >= Protocol.SunRise ? 9 : 6;
+        const icaoLength = 6;
         this.icao = data.readString(icaoLength);
         this.region = data.readString(3);
         this.latitude = data.readFloat64();

@@ -13,7 +13,7 @@ export class Icao {
     airport: string;
 
     constructor(data: RawBuffer, protocol: Protocol) {
-        const identLength = protocol >= Protocol.SunRise ? 9 : 6;
+        const identLength = 6;
         this.type = data.readString(1)[0] as IcaoType;
         this.ident = data.readString(identLength);
         this.region = data.readString(3);
